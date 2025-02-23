@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐</title>
+    <style>
+        body {
+            background-color: pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        .birthday-message {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .cake-image {
+            cursor: pointer;
+            width: 200px;
+            height: auto;
+            transition: transform 0.2s;
+        }
+        .cake-image:hover {
+            transform: scale(1.1);
+        }
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #ff0;
+            border-radius: 50%;
+            animation: explode 1.5s ease-out forwards;
+        }
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-message">
+        <h1>生日快乐！</h1>
+        <p>愿你每一天都充满快乐与幸福！</p>
+        <p>愿你的梦想成真，未来更加美好！</p>
+    </div>
+    <!-- C:\Users\admin\Desktop\happy birthday -->
+    <img src="cake.png" alt="生日蛋糕" class="cake-image" onclick="createFireworks(event)">
+
+    <script>
+        function createFireworks(event) {
+            const colors = ['#ff0', '#f0f', '#0ff', '#f00', '#0f0', '#00f']; // 粒子颜色
+            const numParticles = 100; // 粒子数量
+            const spread = 200; // 粒子扩散范围
+
+            for (let i = 0; i < numParticles; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+
+                // 随机颜色
+                firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                // 随机扩散方向
+                const angle = Math.random() * 2 * Math.PI; // 随机角度
+                const distance = Math.random() * spread; // 随机距离
+                const x = Math.cos(angle) * distance; // x轴偏移
+                const y = Math.sin(angle) * distance; // y轴偏移
+
+                // 设置粒子初始位置
+                firework.style.left = `${event.clientX}px`;
+                firework.style.top = `${event.clientY}px`;
+
+                // 使用 CSS 变量传递随机偏移量
+                firework.style.setProperty('--x', `${x}px`);
+                firework.style.setProperty('--y', `${y}px`);
+
+                // 随机动画时长
+                firework.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+
+                document.body.appendChild(firework);
+
+                // 动画结束后移除粒子
+                firework.addEventListener('animationend', () => {
+                    firework.remove();
+                });
+            }
+        }
+    </script>
+</body>
+</html>
